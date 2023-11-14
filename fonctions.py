@@ -214,6 +214,7 @@ def creationDfEuromllions(euromillions2004_2011,euromillions2011_2014,euromillio
     
     dataEuro=pd.concat([dfeuromillions2004_2011,dfeuromillions2011_2014,dfeuromillions2014_2016,dfeuromillions2016_2019,dfeuromillions2019_2020,dfeuromillions2020_now],ignore_index=True)
     dataEuro['jour_de_tirage']=dataEuro['jour_de_tirage'].str.lower().str.strip()
+    dataEuro['rapport_du_rang1']=dataEuro['rapport_du_rang1'].apply(lambda x:int(x))
     dataEuro['boules_gagnantes_en_ordre_croissant']=dataEuro['boules_gagnantes_en_ordre_croissant'][1:-1]
     dataEuro['etoiles_gagnantes_en_ordre_croissant']=dataEuro['etoiles_gagnantes_en_ordre_croissant'][1:-1]
     return (dataEuro.sort_values(by='annee_numero_de_tirage'))
@@ -377,8 +378,6 @@ def ajouterEtiquetteValeur(x_list, y_list):
     for i in range(1, len(x_list) + 1):
         plt.text(i, y_list[i - 1], y_list[i - 1], ha="center")
 
-
-          
 '''fonction qui prend 1 à plusieurs df et qui retourne le nombre de gaagnants par jour de tirage cumulé puis par année'''
 def DfNbGagnant(*data):
     dfJourSemaine=pd.DataFrame()
@@ -398,68 +397,78 @@ def DfNbGagnant(*data):
 def DfMillion(*data):
     dfJourSemaineMillion=pd.DataFrame()
     for i in data:
-        dataN=i.copy()
+        dataN=i
         if 'nombre_de_gagnant_au_rang1_en_europe' in dataN.columns:
             dataN=dataN.rename(columns={'nombre_de_gagnant_au_rang1_en_europe':'nombre_de_gagnant_au_rang1'})
         dataN=dataN[['jour_de_tirage','date_de_tirage','nombre_de_gagnant_au_rang1','rapport_du_rang1']]
         dfJourSemaineMillion=pd.concat([dfJourSemaineMillion,dataN],ignore_index=True)
     dfJourSemaineMillion['date_de_tirage']=dfJourSemaineMillion['date_de_tirage'].apply(lambda x:x[-4:])
-    for i in dfJourSemaineMillion['date_de_tirage']:
-        if i=='9/16':i='2016'
     dfJourSemaineMillion=dfJourSemaineMillion.rename(columns={'date_de_tirage':'annee'}).sort_values(by='annee')
-    dfJourSemaineMillion['nombre_de_gagnant_au_rang1']=dfJourSemaineMillion['nombre_de_gagnant_au_rang1'].apply(lambda x:int(x))
-    print(dfJourSemaineMillion['rapport_du_rang1'].unique())
-    dfJourSemaineMillion['rapport_du_rang1']=dfJourSemaineMillion['rapport_du_rang1'].apply(lambda x:int(x))
+    dfJourSemaineMillion['annee'].tail(1).values[0]='2016'
     dfJourSemaineMillion=dfJourSemaineMillion.loc[dfJourSemaineMillion['nombre_de_gagnant_au_rang1']>0]
-    #dfJourSemaineMillion['rapport_du_rang1']=int(dfJourSemaineMillion['rapport_du_rang1']//dfJourSemaineMillion['nombre_de_gagnant_au_rang1'])
-    return dfJourSemaineMillion
+    return dfJourSemaineMillion.sort_values(by='annee')
 
 '''calcul toutes années cummulées'''
 def PieNbGagnantTotal(data,titre):
     nbGagnant=data['nombre_de_gagnant_au_rang1'].sum()
-    dfJourSemaineCum=pd.pivot_table(data[['jour_de_tirage','nombre_de_gagnant_au_rang1']],columns='jour_de_tirage',values='nombre_de_gagnant_au_rang1',aggfunc='sum').reset_index()
+    dfJourSemaineCum=pd.pivot_table(data[['jour_de_tirage','nombre_de_gagnant_au_rang1']],columns='jour_de_tirage',values='nombre_de_gagnant_au_rang1',aggfunc='mean').reset_index()
     dfJourSemaineCum=pd.melt(dfJourSemaineCum,id_vars='index')
+    print(dfJourSemaineCum)
+    columns=['nombre_de_gagnant_au_rang1']
+    rows=[]
+    for i in dfJourSemaineCum['jour_de_tirage']:
+        rows.append(i)
+    cell_text=[]
+    for row in range(len(data)):
+        cell_text.append([])
     plt.pie(data=dfJourSemaineCum,
             x='value',
-            beat,
             labels='jour_de_tirage',
-            autopct=lambda i:int(i*nbGagnant/100),
-            explode=(beat == max(beat) * 0.1),
+            autopct=lambda i:round(i,2),
+            #explode=(beat == max(beat) * 0.1),
             shadow=True)
+    plt.table(cellText=cell_text,
+              rowLabels=rows,
+              colLabels=columns,
+              loc='bottom')
     plt.title(titre)
     plt.show()
 
 '''calcul pour chaque année'''
-def BarNbGagnantAnnee(data):
-    dfJourSemaineNbGagnant=pd.pivot_table(data,index='annee',columns='jour_de_tirage',values='nombre_de_gagnant_au_rang1',aggfunc='sum').reset_index()
+def BarNbGagnantAnnee(data,titre):
+    dfJourSemaineNbGagnant=pd.pivot_table(data,index='annee',columns='jour_de_tirage',values='nombre_de_gagnant_au_rang1',aggfunc='mean').reset_index()
     
     dfJourSemaineNbGagnant.plot(x='annee', 
             kind='bar', 
             stacked=False, 
             figsize=(25,10),
-            title='Nombre de gagnant du rang 1 au Loto par année et par jour de tirage',
+            title=titre,
             width=0.8,
             ylabel='nombre de gagnants',
-            xlabel='années',
-            yticks=np.arange(0, 22, 2))
+            xlabel='années')
+            #,yticks=np.arange(0, 22, 2)))
     plt.show()
     
 '''calcul du gain max par jour cumulé '''
-def PieMillionMoyen(data,gainMoyenTotal):
+def PieMillionMoyen(data,titre):
+    '''nbGagnant=data['nombre_de_gagnant_au_rang1'].sum()
+    gainMoyenTotal=(int(data['rapport_du_rang1'])//100).sum()//nbGagnant'''
     dfJourSemaineMillionTotal=pd.pivot_table(data,columns='jour_de_tirage',values='rapport_du_rang1',aggfunc='mean').reset_index()
     dfJourSemaineMillionTotal=pd.melt(dfJourSemaineMillionTotal,id_vars='index')
-    
+    print(dfJourSemaineMillionTotal)
+    '''for i in dfJourSemaineMillionTotal['annee']:
+        if i=='9/16':i='2016'
     plt.pie(data=dfJourSemaineMillionTotal,
             x='value',
             labels='jour_de_tirage',
-            autopct=lambda i:'{:,}'.format(int(i*gainMoyenTotal/100)),
-            explode=(0,0,0.15),
+            autopct=lambda i:'{:,}'.format(i),
+            #explode=(0,0,0.15),
             shadow=True)
-    plt.title('gain moyen du rang 1 par jour de tirage entre 2008 et 2023')
-    plt.show()
+    plt.title(titre)
+    plt.show()'''
 
 '''calcul pour chaque année '''
-def BarMillionMoyen(data):
+def BarMillionMoyen(data,titre):
     dfJourSemaineMillionAnnee=pd.pivot_table(data,index='annee',columns='jour_de_tirage',values='rapport_du_rang1',aggfunc='mean').reset_index()
     
     dfJourSemaineMillionAnnee.plot(x='annee', 
