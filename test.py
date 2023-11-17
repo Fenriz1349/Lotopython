@@ -68,14 +68,14 @@ def main():
     fc.BarNbGagnantAnnee(dfJourSemaineEuromillions,'Nombre moyen de gagnant du rang 1 àl\'Euromillions par année depuis 2004 par jour de tirage')'''
     
     dfJourSemaineMillionAvant2008=fc.DfMillion(dataAncien)
-    dfJourSemaineMillionDepuis2008=fc.DfMillion(dataLoto)
+    '''dfJourSemaineMillionDepuis2008=fc.DfMillion(dataLoto)
     dfJourSemaineMillionTotal=fc.DfMillion(dataLotoTotal)
     dfJourSemaineMillionEuromillions=fc.DfMillion(dataEuromillions)   
     
     fc.PieMillionMoyen(dfJourSemaineMillionAvant2008,'gain moyen du rang 1 par jour de tirage entre 1976 et 2008')
     fc.PieMillionMoyen(dfJourSemaineMillionDepuis2008,'gain moyen du rang 1 par jour de tirage depuis 2008')
     fc.PieMillionMoyen(dfJourSemaineMillionTotal,'gain moyen du rang 1 par jour de tirage depuis 1976')
-   # fc.PieMillionMoyen(dfJourSemaineMillionEuromillions,'gain moyen du rang 1 à l\'Euromillions par jour de tirage depuis 2004')
+   # fc.PieMillionMoyen(dfJourSemaineMillionEuromillions,'gain moyen du rang 1 à l\'Euromillions par jour de tirage depuis 2004')'''
 
     ''''fc.BarMillionMoyen(dfJourSemaineMillion)'''
     
