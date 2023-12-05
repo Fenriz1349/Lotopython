@@ -310,14 +310,14 @@ def framegraph():
     dfJourSemaineLoto=DfNbGagnant(dataLoto)
     global dfJourSemaineEuro
     dfJourSemaineEuro=DfNbGagnant(dataEuromillions)
-    global dfJourSemaineMillionTotal
+    '''global dfJourSemaineMillionTotal
     dfJourSemaineMillionTotal=DfMillion(dataLotoTotal)
     global dfJourSemaineMillionAvant2008
     dfJourSemaineMillionAvant2008=DfMillion(dataAncien)
     global dfJourSemaineMillionDepuis2008
     dfJourSemaineMillionDepuis2008=DfMillion(dataLoto)
     global dfJourSemaineMillionEuromillions
-    dfJourSemaineMillionEuromillions=DfMillion(dataEuromillions)
+    dfJourSemaineMillionEuromillions=DfMillion(dataEuromillions)'''
     
     frameTitreGraph=ttk.Labelframe(generatorgraphframe,text="nombre de gagnant par jour",padding="5 10 5 10")
     generatorgraphframe.add(frameTitreGraph)
@@ -340,12 +340,12 @@ def framegraph():
     Button(frameBarMoyenGraph, text='Lancer',command=lambda :calculateBarNbGagnantAnnee(dfJourSemaineLoto,'Nombre de gagnant par jour de tirage depuis 2008'),font=('Arial', 8, 'bold')).pack()
     Button(frameBarMoyenGraph, text='Lancer',command=lambda :calculateBarNbGagnantAnnee(dfJourSemaineEuro,'Nombre de gagnant par jour de tirage depuis 2011'),font=('Arial', 8, 'bold')).pack()
     
-    framePieMillionGraph=ttk.Labelframe(generatorgraphframe, text="gain max moyen par jour",padding="5 10 5 10")
+    '''framePieMillionGraph=ttk.Labelframe(generatorgraphframe, text="gain max moyen par jour",padding="5 10 5 10")
     generatorgraphframe.add(framePieMillionGraph)
     Button(framePieMillionGraph, text='Lancer',command=lambda :calculatePieMillionMoyen(dfJourSemaineMillionTotal,'gain moyen du rang 1 par jour de tirage de 1976 à aujour\'hui'),font=('Arial', 8, 'bold')).pack()      
     Button(framePieMillionGraph, text='Lancer',command=lambda :calculatePieMillionMoyen(dfJourSemaineMillionAvant2008,'gain moyen du rang 1 par jour de tirage entre 1976 et 2008'),font=('Arial', 8, 'bold')).pack()
     Button(framePieMillionGraph, text='Lancer',command=lambda :calculatePieMillionMoyen(dfJourSemaineMillionDepuis2008,'gain moyen du rang 1 par jour de tirage depuis 2008'),font=('Arial', 8, 'bold')).pack()
-    Button(framePieMillionGraph, text='Lancer',command=lambda :calculatePieMillionMoyen(dfJourSemaineMillionEuromillions,'gain moyen du rang 1 par jour de tirage d\'Euromillion depuis 2011'),font=('Arial', 8, 'bold')).pack()
+    Button(framePieMillionGraph, text='Lancer',command=lambda :calculatePieMillionMoyen(dfJourSemaineMillionEuromillions,'gain moyen du rang 1 par jour de tirage d\'Euromillion depuis 2011'),font=('Arial', 8, 'bold')).pack()'''
 
 def main(root):
     viderDossierData()

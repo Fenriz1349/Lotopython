@@ -402,7 +402,7 @@ def DfMillion(data):
     if 'nombre_de_gagnant_au_rang1_en_europe' in dfJourSemaineMillion.columns:
         dfJourSemaineMillion=dfJourSemaineMillion.rename(columns={'nombre_de_gagnant_au_rang1_en_europe':'nombre_de_gagnant_au_rang1'})
     dfJourSemaineMillion=dfJourSemaineMillion[['jour_de_tirage','date_de_tirage','nombre_de_gagnant_au_rang1','rapport_du_rang1']]
-    for i in dfJourSemaineMillion['rapport_du_rang1'].values[0]:
+    '''for i in dfJourSemaineMillion['rapport_du_rang1'].values[0]:
         if i[-2]=='+' and type(i)==str:
             if i[-1]=='6':
                 n=i[0]+'.'+i[2:4]
@@ -410,16 +410,16 @@ def DfMillion(data):
             elif i[-1]=='7':
                 n=i[0:2]+'.'+i[3]
                 i=float(n)
-        else :i=float(i)/1000000
+        else :i=float(i)/1000000'''
     
     dfJourSemaineMillion['date_de_tirage']=dfJourSemaineMillion['date_de_tirage'].apply(lambda x:x[-4:])
     #for i in dfJourSemaineMillion['rapport_du_rang1']:
      #   if type(i)!=int:print(i)
-    '''dfJourSemaineMillion['rapport_du_rang1']=dfJourSemaineMillion['rapport_du_rang1'].apply(lambda x:int(x))
+    dfJourSemaineMillion['rapport_du_rang1']=dfJourSemaineMillion['rapport_du_rang1'].apply(lambda x:int(x))
     dfJourSemaineMillion=dfJourSemaineMillion.rename(columns={'date_de_tirage':'annee'}).sort_values(by='annee')
     dfJourSemaineMillion['annee'].tail(1).values[0]='2016'
     dfJourSemaineMillion=dfJourSemaineMillion.loc[dfJourSemaineMillion['nombre_de_gagnant_au_rang1']>0]
-    return dfJourSemaineMillion.sort_values(by='annee')'''
+    return dfJourSemaineMillion.sort_values(by='annee')
 
 '''calcul toutes années cummulées'''
 def PieNbGagnantTotal(data,titre):
