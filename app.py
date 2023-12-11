@@ -379,7 +379,7 @@ def main(root):
     frameLoto()
     frameEuro()
     framegraph()
-    #boutonsAnnee()'''
+    #boutonsAnnee()
     
     for child in mainframe.winfo_children(): 
         child.grid_configure(padx=5, pady=5)
