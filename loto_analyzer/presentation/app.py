@@ -6,7 +6,7 @@ Created on Fri Nov 17 08:31:05 2023
 """
 from tkinter import *
 from tkinter import ttk
-from .fonctions import *
+from ..fonctions import *
 import random as rd
 import numpy as np
 import pandas as pd
