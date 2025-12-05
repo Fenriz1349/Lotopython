@@ -12,7 +12,7 @@ from zipfile import ZipFile
 import matplotlib.pyplot as plt
 import requests
 import os
-import fonctions as fc
+import lotopython.fonctions as fc
 
 
 def main():

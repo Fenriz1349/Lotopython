@@ -1,0 +1,14 @@
+# Données FDJ
+data/*.csv
+data/*.zip
+data/metadata.json
+
+# Python cache
+__pycache__/
+lotopython/__pycache__/
+
+# Virtual environment
+.venv/
+
+# macOS
+.DS_Store
